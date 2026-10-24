@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
-import { obtenerReceta, obtenerRecetas } from '../api';
+import { obtenerRecetas } from '../api';
 import Temporizador from '../components/Temporizador';
 
-function Detalle({ propias, favoritos, onToggleFavorito }) {
+function Detalle({ propias = [], favoritos = [], onToggleFavorito }) {
   const { id } = useParams();
   const [receta, setReceta] = useState(null);
   const [relacionadas, setRelacionadas] = useState([]);
@@ -21,20 +21,26 @@ function Detalle({ propias, favoritos, onToggleFavorito }) {
       return;
     }
 
-    Promise.all([obtenerReceta(id, controller.signal), obtenerRecetas(controller.signal)])
-      .then(([encontrada, todas]) => {
-        setReceta(encontrada ?? null);
+    obtenerRecetas(controller.signal)
+      .then((todas) => {
+        const encontrada = todas.find((r) => r.id === Number(id)) ?? null;
+        setReceta(encontrada);
         setRelacionadas(
-          encontrada ? todas.filter((r) => encontrada.relacionadas.includes(r.id)) : []
+          encontrada?.relacionadas
+            ? todas.filter((r) => encontrada.relacionadas.includes(r.id))
+            : []
         );
         setCargando(false);
       })
       .catch((error) => {
-        if (error.name !== 'AbortError') console.error(error);
+        if (error.name === 'AbortError') return;
+        console.error(error);
+        setReceta(null);
+        setCargando(false);
       });
 
     return () => controller.abort();
-  }, []);
+  }, [id, propias]);
 
   if (cargando) return <p>Cargando receta…</p>;
   if (!receta) return <p>No encontramos esta receta.</p>;
