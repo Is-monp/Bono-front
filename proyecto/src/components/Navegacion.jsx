@@ -9,7 +9,7 @@ function Navegacion({ totalFavoritos }) {
         <NavLink to="/recetas">Recetas</NavLink>
         <NavLink to="/favoritos">
           Favoritos
-          {totalFavoritos && <span className="contador">{totalFavoritos}</span>}
+          {totalFavoritos > 0 && <span className="contador">{totalFavoritos}</span>}
         </NavLink>
         <NavLink to="/nueva">Nueva receta</NavLink>
       </nav>
