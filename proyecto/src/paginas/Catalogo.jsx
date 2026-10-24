@@ -58,9 +58,9 @@ function Catalogo({ propias }) {
       <p>Mostrando {visibles.length} recetas</p>
 
       <div className="grilla">
-        {visibles.map((receta) => {
-          <TarjetaReceta key={receta.id} receta={receta} />;
-        })}
+       {visibles.map((receta) => {
+          return <TarjetaReceta key={receta.id} receta={receta} />;
+      })}
       </div>
     </section>
   );
