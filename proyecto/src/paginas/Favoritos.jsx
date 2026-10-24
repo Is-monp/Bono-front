@@ -4,6 +4,7 @@ import { obtenerRecetas } from '../api';
 
 function Favoritos({ favoritos, onQuitar }) {
   const [recetas, setRecetas] = useState([]);
+  const [orden, setOrden] = useState('nombre');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -28,11 +29,11 @@ function Favoritos({ favoritos, onQuitar }) {
     );
   }
 
-  const [orden, setOrden] = useState('nombre');
-
   const lista = recetas
     .filter((r) => favoritos.includes(r.id))
-    .sort((a, b) => (orden === 'nombre' ? a.nombre.localeCompare(b.nombre) : a.tiempo - b.tiempo));
+    .sort((a, b) =>
+      orden === 'nombre' ? a.nombre.localeCompare(b.nombre) : a.tiempo - b.tiempo
+    );
 
   return (
     <section>
