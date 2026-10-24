@@ -25,7 +25,7 @@ function Inicio() {
       {destacada ? (
         <div className="destacada">
           <h2>Receta de la semana: {destacada.nombre}</h2>
-          <p>Por {destacada.autor}</p>
+          <p>Por {destacada.autor.nombre}</p>
           <Link to={`/recetas/${destacada.id}`}>Ver la receta</Link>
         </div>
       ) : (
