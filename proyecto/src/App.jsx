@@ -9,7 +9,12 @@ import NuevaReceta from './paginas/NuevaReceta';
 import NoEncontrada from './paginas/NoEncontrada';
 
 function leerFavoritos() {
-  return JSON.parse(localStorage.getItem('favoritos')) ?? [];
+  try {
+    const guardado = JSON.parse(localStorage.getItem('favoritos'));
+    return Array.isArray(guardado) ? guardado : [];
+  } catch {
+    return [];
+  }
 }
 
 function App() {
@@ -17,20 +22,19 @@ function App() {
   const [propias, setPropias] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('favoritos', favoritos);
+    localStorage.setItem('favoritos', JSON.stringify(favoritos));
   }, [favoritos]);
 
   function toggleFavorito(id) {
-    if (favoritos.includes(id)) {
-      setFavoritos(favoritos.filter((f) => f !== id));
-    } else {
-      favoritos.push(id);
-      setFavoritos(favoritos);
-    }
+    setFavoritos((actuales) =>
+      actuales.includes(id)
+        ? actuales.filter((f) => f !== id)
+        : [...actuales, id]
+    );
   }
 
   function agregarReceta(receta) {
-    setPropias([...propias, receta]);
+    setPropias((actuales) => [...actuales, receta]);
   }
 
   return (
