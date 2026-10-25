@@ -8,6 +8,11 @@ function NuevaReceta({ onAgregar }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -37,16 +42,18 @@ function NuevaReceta({ onAgregar }) {
         <label>
           Nombre
           <input
+            name="nombre"
             value={form.nombre}
-            onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+            onChange={handleChange}
           />
         </label>
 
         <label>
           Categoría
           <select
+            name="categoria"
             value={form.categoria}
-            onChange={(e) => setForm({ ...form, categoria: e.target.value })}
+            onChange={handleChange}
           >
             <option value="desayuno">desayuno</option>
             <option value="almuerzo">almuerzo</option>
@@ -58,9 +65,10 @@ function NuevaReceta({ onAgregar }) {
         <label>
           Tiempo (minutos)
           <input
+            name="tiempo"
             type="number"
             value={form.tiempo}
-            onChange={(e) => setForm({ tiempo: e.target.value })}
+            onChange={handleChange}
           />
         </label>
 
