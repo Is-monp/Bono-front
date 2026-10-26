@@ -25,13 +25,17 @@ function App() {
     localStorage.setItem('favoritos', JSON.stringify(favoritos));
   }, [favoritos]);
 
-  function toggleFavorito(id) {
-    setFavoritos((actuales) =>
-      actuales.includes(id)
-        ? actuales.filter((f) => f !== id)
-        : [...actuales, id]
-    );
-  }
+
+function toggleFavorito(id) {
+  const yaEsFavorito = favoritos.includes(id);
+
+  setFavoritos((actuales) =>
+    yaEsFavorito
+      ? actuales.filter((f) => f !== id)
+      : [...actuales, id]
+  );
+  alert(yaEsFavorito ? 'Receta quitada de favoritos' : 'Receta agregada a favoritos');
+}
 
   function agregarReceta(receta) {
     setPropias((actuales) => [...actuales, receta]);
